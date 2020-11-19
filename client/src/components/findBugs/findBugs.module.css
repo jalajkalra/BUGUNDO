@@ -1,0 +1,30 @@
+.Body{
+    text-align: center;
+    margin-top: 3%;
+}
+.Button{
+    background-color: orange;
+    padding: 1rem 1.5rem;
+    font-size: 18px;
+    color:white;
+    border:none;
+    border-radius:1.57rem;
+    cursor:pointer;
+}
+.Button:hover{
+    background-color: rgb(255, 190, 68);
+}
+.Input{
+    outline: none;
+    border-radius: 1.57rem;
+}
+.Form{
+    margin: 8% auto;
+}
+.Error{
+    background-color: #d9534f;
+    color: white;
+    margin: 1%;
+    padding: 1%;
+    text-align: center;
+}

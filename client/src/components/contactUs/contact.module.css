@@ -1,0 +1,108 @@
+.PhoneView{
+    display: none;
+}
+.Input{
+    margin: 1rem 0;
+}
+.Img{
+    width: 100%;
+    height: auto;
+}
+.ContactBackground{
+    padding:1rem 5rem;
+}
+.Contact{
+    /* margin-top: -5%; */
+    background-color: white;
+    position: relative;
+}
+.Centered{
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+.H1{
+    font-weight: 800;
+    color: #666;
+    font-style: 30px;
+}
+.Center{
+    display: flex;
+    flex-direction: column;
+    color: #888;
+}
+.H12{
+    font-weight: 700;
+    color: steelblue;
+    opacity: 0.7;
+    font-style: 28px;
+}
+.Fade{
+    color: #999;
+}
+.Background{
+    box-shadow: 1px 1px 4px 5px #dddddd;
+    text-align: center;
+    padding: 5rem;
+}
+@media (max-width:992px){
+    .Background{
+        padding: 2rem;
+    }
+    .ContactBackground{
+        padding: 2rem;
+    }
+    .H1{
+        font-size: 26px;
+    }
+    .H12{
+        font-size: 25px;
+    }
+}
+@media (max-width:992px){
+    .Background{
+        padding: 1rem;
+    }
+    .ContactBackground{
+        padding: 1rem;
+    }
+    .H1{
+        font-size: 24px;
+    }
+    .H12{
+        font-size: 22px;
+    }
+}
+@media (max-width:992px){
+    .Contact{
+        margin: 0;
+    }
+    .H1{
+        font-size: 16px;
+    }
+    .H12{
+        font-size: 18px;
+    }
+    .Background{
+        padding: 0.2rem 0.8rem;
+    }
+    .ContactBackground{
+        padding: 2rem 0.3rem;
+    }
+    .Fade{
+        font-size: 9px;
+        margin: 0;
+    }
+    .Center{
+        font-size: 11px;
+    }
+    .Input{
+        margin: 0.3rem 0;
+    }
+    .ContactText{
+        font-size: 7px;
+    }
+    .PhoneView{
+        display: block;
+    }
+}
