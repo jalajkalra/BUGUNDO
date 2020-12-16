@@ -19,6 +19,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import House from '@material-ui/icons/House';
 import MailIcon from '@material-ui/icons/Mail';
 import {Nav} from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { Logout } from '../../entities/action/logout';
 
 const drawerWidth = 240;
 
@@ -83,7 +85,7 @@ export default function DrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -102,18 +104,18 @@ export default function DrawerLeft() {
         })}
       >
         <Toolbar style={{backgroundImage:'linear-gradient( 180deg, rgba(0, 0, 0,0.4) 0%,rgb(0, 0, 0) 100%)'}}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            BUGUNDO
-          </Typography>
+              <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  className={clsx(classes.menuButton, open && classes.hide)}
+                >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap>
+                BUGUNDO
+              </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -154,6 +156,13 @@ export default function DrawerLeft() {
             <ListItem button>
                 <ListItemIcon><MailIcon /></ListItemIcon>
                     <Nav.Link href="/contactUs">Contact US</Nav.Link>
+            </ListItem>
+        </List>
+        <Divider />
+        <List>
+            <ListItem button onClick={()=>dispatch(Logout())}>
+              <ListItemIcon><PermIdentity /></ListItemIcon>
+                <Nav.Link>Logout</Nav.Link>
             </ListItem>
         </List>
       </Drawer>

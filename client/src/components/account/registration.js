@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect,useState }  from 'react';
 import {Form,Button} from 'react-bootstrap';
 import classes from './authentication.module.css';
 import {Formik} from 'formik';
@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import auth from '../../assets/auth.png';
 import { Link } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux';
-import { AUTHUser } from '../../entities/action/action';
+import { AUTHUser, clearError } from '../../entities/action/action';
 
 const validationSchema=Yup.object().shape({
     email:Yup.string()
@@ -20,12 +20,23 @@ const validationSchema=Yup.object().shape({
 
 function Registration(props) { 
     const dispatch = useDispatch();
-    const isAuth = useSelector(state=>state.isLoggedIn)
+    const isAuth = useSelector(state=>state.isLoggedIn);
+    const error = useSelector(state=>state.error);
+    const [message,updateMessage] = useState('');
     useEffect(()=>{
         if(isAuth){
             props.history.push("/home");
         }
     },[isAuth,props.history])
+    useEffect(()=>{
+        if(error){
+            updateMessage("Error !!!");
+            dispatch(clearError());
+        }
+        setTimeout(()=>{
+            updateMessage('');
+        },5000);
+    },[error])
     return (
     <>
     <div className={classes.Background}>
@@ -95,6 +106,14 @@ function Registration(props) {
                                 <br/>
                                 <Link to="/">Already have an account? login here</Link>
                                 </center>
+                                {
+                                    message.length>0?
+                                    <center>
+                                        <p style={{background:'pink',padding:'15px',fontWeight:'bold'}}>
+                                            {message}
+                                        </p>
+                                    </center>:null
+                                }
                             </Form>
                         )}
                     </Formik>

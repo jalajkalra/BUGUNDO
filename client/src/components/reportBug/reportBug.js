@@ -1,30 +1,82 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { Formik } from 'formik';
 import {Form,Col,Button, Container} from 'react-bootstrap';
 import Drawer from '../Drawer/drawer';
 import Footer from '../footer/footer';
 import classes from '../home/home.module.css';
+import {secret} from '../../config/config';
+import CryptoJS from 'crypto-js';
+import {useSelector} from 'react-redux';
 
 const ReportBug = (props)=>{
+    const isAuth = useSelector(state=>state.isLoggedIn);
+    const [message,updateMessage] = useState('');
+    const userID = localStorage.getItem('Ab291Xy5Qrt1C259');
+    const userId = CryptoJS.AES.decrypt(userID,`${secret}`).toString(CryptoJS.enc.Utf8);
+    useEffect(()=>{
+        setTimeout(()=>{
+            updateMessage('');
+        },5000);
+    },[message]);
     return(
-        <div className={classes.Background}>
+        <>
+        {
+            isAuth?
+            <div className={classes.Background}>
             <Drawer/>
             <Container style={{color:'white'}}> 
             <hr/>
             <center><h2>Report Bug</h2></center>
             <hr/>
              <Formik 
-                    initialValues={{ Product: '', Component: '' }} 
+                    initialValues={{ Product: '', 
+                                    Component: '',
+                                    Severity:'',
+                                    OS:'',
+                                    Priority:'',
+                                    Assignee:'',
+                                    Summary:'',
+                                    Summary__1:'',
+                                    AssigneeRealName:'',
+                                    Hardware:'',
+                                    QAContact:'',
+                                    QAContactRealName:'',
+                                    TargetMilestone:'',
+                                    Tags:'',
+                                    Status:'',
+                                    Resolution:'',
+                                    Changed:'',
+                                    Classification:'',
+                                    Flags:'',
+                                    Keywords:'',
+                                    Whiteboard:'',
+                                    Alias:'' ,
+                                    Version:'',
+                                    URL:''}} 
                     onSubmit={
                         async(values,{setSubmitting,resetForm})=>{
-                            setSubmitting(true);
+                            if(values.Priority != ''&& values.Severity != ''){
+                                const res = await fetch('http://localhost:8000/data/bugs',{
+                                method:'post',
+                                headers:{
+                                    'Content-Type':'application/json'
+                                },
+                                body:JSON.stringify({...values,userId})
+                                });
+                                const json = await res.json();
+                                if(json.message==="success"){
+                                    updateMessage("Successfully Filled The Bug");
+                                }
+                            }
+                            setSubmitting(false);
+                            resetForm();
                         }
                     }>
                         {({values,errors,touched,handleChange,handleBlur,handleSubmit,isSubmitting})=>(
                             <Form onSubmit={handleSubmit}>
                                 <Form.Row> 
                                 <Form.Group as={Col} controlId="formBasicProduct">
-                                    <Form.Label>Product</Form.Label>
+                                    <Form.Label>Product (*)</Form.Label>
                                     <Form.Control
                                     name="Product"
                                     type="text" 
@@ -32,13 +84,14 @@ const ReportBug = (props)=>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.Product}
+                                    required
                                     className={touched.Product && errors.name ? "has-error":null}/> 
                                     <Form.Text className="text-muted">
                                     {errors.Product && touched.Product && errors.email}
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPassword">
-                                    <Form.Label>Component</Form.Label>
+                                    <Form.Label>Component (*)</Form.Label>
                                     <Form.Control 
                                     name="Component"
                                     type="text" 
@@ -46,6 +99,7 @@ const ReportBug = (props)=>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.Component}
+                                    required
                                     className={touched.Component && errors.Component ? "has-error":null} />
                                     <Form.Text className="text-muted">
                                     {errors.Component && touched.Component && errors.Component}
@@ -54,7 +108,7 @@ const ReportBug = (props)=>{
                                 </Form.Row>
                                 <Form.Row> 
                                 <Form.Group as={Col} controlId="formBasicAssignee">
-                                    <Form.Label>Assignee</Form.Label>
+                                    <Form.Label>Assignee (*)</Form.Label>
                                     <Form.Control
                                     name="Assignee"
                                     type="text" 
@@ -62,6 +116,7 @@ const ReportBug = (props)=>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.Assignee}
+                                    required
                                     className={touched.Assignee && errors.name ? "has-error":null}/> 
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicStatus">
@@ -89,7 +144,7 @@ const ReportBug = (props)=>{
                                     className={touched.Resolution && errors.name ? "has-error":null}/> 
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicSummary">
-                                    <Form.Label>Summary</Form.Label>
+                                    <Form.Label>Summary (*)</Form.Label>
                                     <Form.Control 
                                     name="Summary"
                                     type="text" 
@@ -97,6 +152,7 @@ const ReportBug = (props)=>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.Summary}
+                                    required
                                     className={touched.Summary && errors.Summary ? "has-error":null} />
                                 </Form.Group>
                                 </Form.Row>
@@ -150,7 +206,7 @@ const ReportBug = (props)=>{
                                 </Form.Row>
                                 <Form.Row> 
                                 <Form.Group as={Col} controlId="formBasicHardware">
-                                    <Form.Label>Hardware</Form.Label>
+                                    <Form.Label>Hardware (*)</Form.Label>
                                     <Form.Control
                                     name="Hardware"
                                     type="text" 
@@ -158,6 +214,7 @@ const ReportBug = (props)=>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.Hardware}
+                                    required
                                     className={touched.Resolution && errors.name ? "has-error":null}/> 
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicKeywords">
@@ -174,26 +231,35 @@ const ReportBug = (props)=>{
                                 </Form.Row>
                                 <Form.Row> 
                                 <Form.Group as={Col} controlId="formBasicOS">
-                                    <Form.Label>OS</Form.Label>
+                                    <Form.Label>OS (*)</Form.Label>
                                     <Form.Control
                                     name="OS"
-                                    type="text" 
-                                    placeholder="Enter OS"
+                                    as="select"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.OS}
-                                    className={touched.OS && errors.OS ? "has-error":null}/> 
+                                    required
+                                    className={touched.OS && errors.OS ? "has-error":null}>
+                                        <option value="">----Select----</option>
+                                        <option value="Windows">Windows</option>
+                                        <option value="macOS">macOS</option>
+                                        <option value="Linux">Linux</option>
+                                        <option value="Microsoft">Microsoft</option>
+                                    </Form.Control>  
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicPriority">
-                                    <Form.Label>Priority</Form.Label>
+                                    <Form.Label>Priority (*)</Form.Label>
                                     <Form.Control 
                                     name="Priority"
-                                    type="text" 
-                                    placeholder="Enter Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.Priority}
-                                    className={touched.Priority && errors.Priority ? "has-error":null} />
+                                    required
+                                    as="select"
+                                    className={touched.Priority && errors.Priority ? "has-error":null}>
+                                        <option value="">----Select----</option>
+                                        <option value="P1">P1</option>
+                                        <option value="P2">P2</option>
+                                        <option value="P3">P3</option>
+                                    </Form.Control> 
                                 </Form.Group>
                                 </Form.Row>
                                 <Form.Row> 
@@ -221,45 +287,30 @@ const ReportBug = (props)=>{
                                 </Form.Group>
                                 </Form.Row>
                                 <Form.Row> 
-                                <Form.Group as={Col} controlId="formBasicReporter">
-                                    <Form.Label>Reporter</Form.Label>
-                                    <Form.Control
-                                    name="Reporter"
-                                    type="text" 
-                                    placeholder="Enter Reporter"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.Reporter}
-                                    className={touched.Reporter && errors.name ? "has-error":null}/> 
-                                </Form.Group>
-                                <Form.Group as={Col} controlId="formBasicReporterRealName">
-                                    <Form.Label>Reporter Real Name</Form.Label>
-                                    <Form.Control 
-                                    name="ReporterRealName"
-                                    type="text" 
-                                    placeholder="Reporter Real Name"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.ReporterRealName}
-                                    />
-                                </Form.Group>
-                                </Form.Row>
-                                <Form.Row> 
                                 <Form.Group as={Col} controlId="formBasicSeverity">
-                                    <Form.Label>Severity</Form.Label>
+                                    <Form.Label>Severity (*)</Form.Label>
                                     <Form.Control
-                                    name="Severity"
-                                    type="text" 
-                                    placeholder="Enter Severity"
+                                    name="Severity" 
+                                    as="select"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.Severity}
-                                    className={touched.Severity && errors.Severity ? "has-error":null}/> 
+                                    required
+                                    className={touched.Severity && errors.Severity ? "has-error":null}>
+                                        <option value="">----Select----</option>
+                                        <option value="Blocker">Blocker</option>
+                                        <option value="Critical">Critical</option>
+                                        <option value="Regression">Regression</option>
+                                        <option value="Major">Major</option>
+                                        <option value="Normal">Normal</option>
+                                        <option value="Minor">Minor</option>
+                                        <option value="Trivial">Trivial</option>
+                                        <option value="Enhancement">Enhancement</option> 
+                                    </Form.Control> 
                                 </Form.Group>
                                 <Form.Group as={Col} controlId="formBasicSummary__1">
                                     <Form.Label>Summary__1</Form.Label>
                                     <Form.Control 
-                                    name="Priority"
+                                    name="Summary__1"
                                     type="text" 
                                     placeholder="Enter Summary__1"
                                     onChange={handleChange}
@@ -359,12 +410,28 @@ const ReportBug = (props)=>{
                                 Cancel
                                 </Button>
                                 </center>
+                                {
+                                    message.length>0?
+                                    <center>
+                                        <p style={{background:'green',padding:'15px',fontWeight:'bold'}}>
+                                            {message}
+                                        </p>
+                                    </center>:null
+                                }
                             </Form>
                         )}
                     </Formik>
                     </Container>
                     <Footer/>
-        </div>
+                </div>
+            :
+            <div className={classes.Background}>
+                <center>
+                    <h2 style={{color:'white'}}>Page Not found !!!</h2>
+                </center>
+            </div>
+        }
+        </>
     )
 }
 export default ReportBug;

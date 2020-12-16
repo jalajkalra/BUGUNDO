@@ -15,12 +15,10 @@ const BugSchema = new Schema({
         required:true
     },
     "Status": {
-        type:String,
-        required:true
+        type:String
     },
     "Resolution":{
-        type:String,
-        required:true
+        type:String
     },
     "Summary":{
         type:String,
@@ -28,15 +26,12 @@ const BugSchema = new Schema({
     },
     "Changed":{
         type:String,
-        required:true
     },
-    "Assignee Real Name":{
+    "AssigneeRealName":{
         type:String,
-        required:true
     },
     "Classification":{
         type:String,
-        required:true
     },
     "Flags":{
         type:String,
@@ -47,9 +42,6 @@ const BugSchema = new Schema({
     },
     "Keywords":{
         type:String,
-    },
-    "Number of Comments":{
-        type:Number,
     },
     "Opened":{
         type:Date,
@@ -63,21 +55,19 @@ const BugSchema = new Schema({
         type:String,
         required:true
     },
-    "QA Contact":{
+    "QAContact":{
         type:String,
     },
-    "QA Contact Real Name":{
+    "QAContactRealName":{
         type:String,
     },
     "Reporter":{
         type:String,
         required:true
     },
-    "Reporter Real Name":{
-        type:String,
-    },
     "Severity":{
         type:String,
+        required:true
     },
     "Summary__1":{
         type:String,
@@ -85,7 +75,7 @@ const BugSchema = new Schema({
     "Tags":{
         type:String,
     },
-    "Target Milestone":{
+    "TargetMilestone":{
         type:String,
     },
     "URL":{
@@ -103,6 +93,10 @@ const BugSchema = new Schema({
     },
     "Alias":{
         type:String,
+    },
+    "Comments":{
+        type:Array,
+        default:[]
     }
 })
 

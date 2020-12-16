@@ -5,6 +5,7 @@ import Footer from '../footer/footer';
 import ResponsiveDrawer from '../Drawer/drawer';
 import {Form,Container,Col} from 'react-bootstrap';
 import Page from '../pagination/pagination';
+import { Link } from 'react-router-dom';
  
 const FindBugs = (props)=>{
     const [category,updateCategory] = useState('id');
@@ -12,7 +13,7 @@ const FindBugs = (props)=>{
     const [error,updateError] = useState('');
     const [currentPage,updateCurrentPage] = useState(1);
     const [count,updateCount] = useState(0)
-    const postPerPage = 3;
+    const postPerPage = 4;
     const [post,updatePost] = useState([]);
     const handleChange = (event,value)=>{
         updateCurrentPage(value)
@@ -22,12 +23,9 @@ const FindBugs = (props)=>{
     },[post])
     const submitHandler = async(e)=>{
         e.preventDefault();
-        let url = `http://localhost:5000/data/${category}/${search}`;
+        let url = `http://localhost:8000/data/bug/${category}/${search}`;
         const response = await fetch(url,{
-            method:"get",
-            headers:{
-                'Content-Type': 'application/json'
-            }
+            method:'get'
         });
         const json = await response.json();
         updatePost(json.data);
@@ -84,24 +82,30 @@ const FindBugs = (props)=>{
         </Container>
         <Container>
                 {
-                    currentPosts.length>0?currentPosts.map((item,key)=>
-                    <Fragment key={key}>
+                    currentPosts.length>0?
+                    <Fragment>
                         <div className={classesx.Elements}>
                             <ul className={classesx.UL}>
-                                <center><h3>Search Results</h3></center>
-                                <li className={classesx.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classesx.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classesx.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classesx.RedCircle}>Bug</span><span className={classesx.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
+                                <center><h3 style={{marginBottom:'40px'}}>Search Results</h3></center>
+                                {
+                                    currentPosts.map((item,key)=>
+                                        <Link to={`/bugs/${item._id}`} id="noStyle"> 
+                                        <li className={classesx.LI}>
+                                            <div style={{display:'flex'}}>
+                                                <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
+                                                <div>
+                                                    <p className={classesx.BugName}>{item.Summary}</p>
+                                                    <p className={classesx.OpenedBy}>#00{key+1} opened by {item.Reporter}</p>
+                                                    <p><span className={classesx.RedCircle}>Bug</span><span className={classesx.OrangeCircle}>Priority : P1</span></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        </Link>
+                                    )    
+                                }
                             </ul>
                         </div>
-                    </Fragment>):null
+                    </Fragment>:null
                 }
             <div style={{display:'flex',justifyContent:'center',margin:'3%'}}>
                 <Page count={count} change={handleChange} page={currentPage}/> 

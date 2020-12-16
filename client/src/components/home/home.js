@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './home.module.css';
 import Drawer from '../Drawer/drawer';
 import { Container, Row, Col } from 'react-bootstrap';
 import Footer from '../footer/footer';
+import {useSelector} from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const Home = ()=>{
+const Home = (props)=>{
+    const isAuth = useSelector(state=>state.isLoggedIn);
+    const highRank = useSelector(state=>state.highRank);
+    const lowRank = useSelector(state=>state.lowRank);
+    const mediumRank = useSelector(state=>state.mediumRank);
+    useEffect(()=>{
+        if(!isAuth){
+            props.history.push("/");
+        }
+    },[isAuth])
     return(
         <div className={classes.Background} style={{overflowX:"hidden"}}>
             <Drawer/>
@@ -13,141 +24,78 @@ const Home = ()=>{
                     <Col lg={4} md={12}>
                         <div className={classes.Elements}>
                             <ul className={classes.UL}>
-                                <center><h3>High Priority</h3></center>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
+                                <center><h3>High Risk</h3></center>
+                                {
+                                    highRank.map((bug,key)=>
+                                        <Link to={`/bugs/${bug._id}`} key={key} id="noStyle"> 
+                                        <li className={classes.LI}>
+                                            <div style={{display:'flex'}}>
+                                                <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
+                                                <div>
+                                                    <p className={classes.BugName}>{bug.Summary}</p>
+                                                    <p className={classes.OpenedBy}>#00{key+1} opened by {bug.Reporter}</p>
+                                                    <p>
+                                                        <span className={classes.RedCircle}>Bug</span>
+                                                        <span className={classes.OrangeCircle}>Priority : {bug.Priority}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>  
+                                        </Link>  
+                                    )
+                                }
                             </ul>
                         </div>
                     </Col>
                     <Col lg={4} md={12}>
                         <div className={classes.Elements}>
                             <ul className={classes.UL}>
-                                <center><h3>Medium Priority</h3></center>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
+                                <center><h3>Medium Risk</h3></center>
+                                {
+                                    mediumRank.map((bug,key)=>
+                                    <Link to={`/bugs/${bug._id}`} key={key} id="noStyle"> 
+                                        <li className={classes.LI}>
+                                            <div style={{display:'flex'}}>
+                                                <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
+                                                <div>
+                                                    <p className={classes.BugName}>{bug.Summary}</p>
+                                                    <p className={classes.OpenedBy}>#00{key+1} opened by {bug.Reporter}</p>
+                                                    <p>
+                                                        <span className={classes.RedCircle}>Bug</span>
+                                                        <span className={classes.OrangeCircle}>Priority : {bug.Priority}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li> 
+                                    </Link>       
+                                    )
+                                }
                             </ul>
                         </div>
                     </Col>
                     <Col lg={4} md={12}>
                         <div className={classes.Elements}>
                             <ul className={classes.UL}>
-                                <center><h3>Low Priority</h3></center>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>LFS Merge Conflict Merges Pointers</p>
-                                            <p className={classes.OpenedBy}>#7166 opened by Jalaj kalra</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P1</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className={classes.LI}>
-                                    <div style={{display:'flex'}}>
-                                        <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
-                                        <div>
-                                            <p className={classes.BugName}>GitHub Desktop launches with white screen and unresponsive</p>
-                                            <p className={classes.OpenedBy}>#4054 opened by Be1con</p>
-                                            <p><span className={classes.RedCircle}>Bug</span><span className={classes.OrangeCircle}>Priority : P3</span></p>
-                                        </div>
-                                    </div>
-                                </li>
+                                <center><h3>Low Risk</h3></center>
+                                {
+                                    lowRank.map((bug,key)=>
+                                    <Link to={`/bugs/${bug._id}`} key={key} id="noStyle"> 
+                                        <li className={classes.LI}>
+                                            <div style={{display:'flex'}}>
+                                                <div><i className="fas fa-exclamation-circle fa-2x" style={{margin:'20px',color:'green'}}></i></div>
+                                                <div>
+                                                    <p className={classes.BugName}>{bug.Summary}</p>
+                                                    <p className={classes.OpenedBy}>#00{key+1} opened by {bug.Reporter}</p>
+                                                    <p>
+                                                        <span className={classes.RedCircle}>Bug</span>
+                                                        <span className={classes.OrangeCircle}>Priority : {bug.Priority}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li> 
+                                    </Link>   
+                                    )
+                                }
                             </ul>
                         </div>
                     </Col>
