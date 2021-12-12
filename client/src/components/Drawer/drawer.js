@@ -144,7 +144,7 @@ export default function DrawerLeft() {
             </ListItem>
             <ListItem button>
                 <ListItemIcon><BugReport /></ListItemIcon>
-                    <Nav.Link href="/reportBugs">Reported Bugs</Nav.Link>
+                    <Nav.Link href="/reportBugs">Report Bugs</Nav.Link>
             </ListItem>
         </List>
         <Divider />

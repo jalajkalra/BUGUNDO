@@ -63,9 +63,9 @@ export const clearError = ()=>{
     }
 }
 
-export const add = ()=>{
+export const add = (type)=>{
     return async dispatch=>{
-        const res = await fetch('http://localhost:8000/data/bug',{
+        const res = await fetch(`http://localhost:8000/data/bug/${type}`,{
             method:'get'
         });
         const json = await res.json();
@@ -76,9 +76,7 @@ export const add = ()=>{
 export const addData = (data)=>{
     return{
         type: ADD_DATA,
-        highRank:data.highRank,
-        mediumRank:data.mediumRank,
-        lowRank:data.lowRank
+        payload: data,
     }
 }
 

@@ -8,12 +8,11 @@ import Description from './components/description/description';
 import FindBugs from './components/findBugs/findBugs';
 import Home from './components/home/home';
 import ReportBug from './components/reportBug/reportBug';
-import { add, checkAuthState } from './entities/action/action';
+import { checkAuthState } from './entities/action/action';
 
 const App = ()=> {
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(add());
     dispatch(checkAuthState());
   },[])
   return (

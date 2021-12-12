@@ -4,9 +4,7 @@ const initialState = {
     apiResponse: null,
     isLoggedIn:false,
     isLoading: false,
-    highRank:[],
-    mediumRank:[],
-    lowRank:[],
+    data:{},
     error:false
 };
 
@@ -15,9 +13,7 @@ const Reducer = ( state = initialState, action ) => {
         case ADD_DATA:
             return{
                 ...state,
-                highRank:action.highRank,
-                mediumRank:action.mediumRank,
-                lowRank:action.lowRank
+                data:action.payload,
             }
         case CLEAR_ERROR:
             return{
